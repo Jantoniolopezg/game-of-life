@@ -1,7 +1,6 @@
 package net.gameoflife.enumeraciones;
 
 public enum TipoRecurso {
-    NINGUNO,
     VACIO,
     AGUA,
     COMIDA,
