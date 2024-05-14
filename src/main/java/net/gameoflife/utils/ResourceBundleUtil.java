@@ -2,7 +2,7 @@ package net.gameoflife.utils;
 
 import java.util.ResourceBundle;
 
-//Sirve para JavaFX
+//Sirve para JavaFX.
 public class ResourceBundleUtil {
 
     private final static String BUNDLE_NAME = "game-of-life";
