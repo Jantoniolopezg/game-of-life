@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.Error"
+            fx:controller="net.gameoflife.controladores.ErrorController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>
