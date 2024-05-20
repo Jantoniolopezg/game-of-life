@@ -1,23 +1,24 @@
 package net.gameoflife.enumeraciones;
 
-import javafx.scene.image.Image;
 import lombok.Getter;
 
-import java.util.Objects;
-
 public enum TipoRecurso {
-    VACIO("empty-resource.png"),
-    AGUA("water-resource.png"),
-    COMIDA("food-resource.png"),
-    MONTE("mountain-resource.png"),
-    TESORO("treasure-resource.png"),
-    BIBLIOTECA("library-resource.png"),
-    POZO("dwell-resource.png");
+    VACIO("empty-resource.png","Vacio"),
+    AGUA("water-resource.png","Agua"),
+    COMIDA("food-resource.png","Comida"),
+    MONTE("mountain-resource.png","Montaña"),
+    TESORO("treasure-resource.png","Tesoro"),
+    BIBLIOTECA("library-resource.png","Biblioteca"),
+    POZO("dwell-resource.png","Pozo");
 
     @Getter
-    private final Image image;
+    private final String imageResourceName;
 
-    TipoRecurso(String resourceName) {
-        this.image = new Image(Objects.requireNonNull(getClass().getResource(resourceName)).toExternalForm());
+    @Getter
+    private final String label;
+
+    TipoRecurso(String imageResourceName, String label) {
+        this.label = label;
+        this.imageResourceName = imageResourceName;
     }
 }

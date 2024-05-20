@@ -23,6 +23,10 @@ public class RecursoConfiguracion {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer vidaRecursos;
+
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BigDecimal aguaProbabilidadRecurso;
 
     @JsonProperty

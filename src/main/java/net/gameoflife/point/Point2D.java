@@ -6,8 +6,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Point2D<T> {
     private T x;
     private T y;
+
+    @Override
+    public String toString(){return "X: " + x + ", Y: " + y;}
 }

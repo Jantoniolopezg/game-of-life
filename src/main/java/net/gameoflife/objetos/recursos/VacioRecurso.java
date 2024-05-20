@@ -4,7 +4,7 @@ import net.gameoflife.enumeraciones.TipoRecurso;
 import net.gameoflife.objetos.configuracion.RecursoConfiguracion;
 
 public class VacioRecurso extends Recurso {
-    public VacioRecurso(RecursoConfiguracion recursoConfiguracion) {
-        super(TipoRecurso.VACIO,recursoConfiguracion);
+    public VacioRecurso(Long generacion, RecursoConfiguracion recursoConfiguracion) {
+        super(TipoRecurso.VACIO, generacion, recursoConfiguracion);
     }
 }

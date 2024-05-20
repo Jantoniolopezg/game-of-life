@@ -6,15 +6,21 @@ import lombok.Getter;
 import java.util.Objects;
 
 public enum TipoIndividuo {
-    NINGUNO("empty-resource.png"),
-    BASICO("basic-individual.png"),
-    NORMAL("normal-individual.png"),
-    AVANZADO("advanced-individual.png");
+    AVANZADO("advanced-individual.png","Avanzado"),
+
+    NORMAL("normal-individual.png","Normal"),
+
+    BASICO("basic-individual.png","Basico"),
+    NINGUNO("empty-resource.png","Ninguno");
 
     @Getter
-    private final Image image;
+    private final String imageResourceName;
 
-    TipoIndividuo(String resourceName) {
-        this.image = new Image(Objects.requireNonNull(getClass().getResource(resourceName)).toExternalForm());
+    @Getter
+    private final String label;
+
+    TipoIndividuo(String imageResourceName, String label) {
+        this.label = label;
+        this.imageResourceName = imageResourceName;
     }
 }

@@ -4,11 +4,7 @@ import net.gameoflife.enumeraciones.TipoIndividuo;
 import net.gameoflife.objetos.configuracion.IndividuoConfiguracion;
 
 public class AvanzadoIndividuo extends Individuo{
-    public AvanzadoIndividuo(IndividuoConfiguracion individuoConfiguracion) {
-        super(TipoIndividuo.AVANZADO,individuoConfiguracion);
-    }
-    @Override
-    public void move() {
-
+    public AvanzadoIndividuo(Long generacion, IndividuoConfiguracion individuoConfiguracion) {
+        super(TipoIndividuo.AVANZADO, generacion, individuoConfiguracion);
     }
 }

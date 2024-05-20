@@ -17,37 +17,39 @@ import java.util.UUID;
 @AllArgsConstructor
 public abstract class Individuo {
 
-    private final UUID uuid;
-    private final TipoIndividuo tipoIndividuo;
-    private Point2D<Integer> posicion;
-    private Integer generacion;
+    private UUID uuid;
+    private TipoIndividuo tipoIndividuo;
+    private Long generacion;
     private Integer vida;
     private BigDecimal probabilidadReproduccion;
     private BigDecimal probabilidadClonacion;
     private BigDecimal probabilidadMuerte;
+    private Point2D<Double> direccion;
+    private Point2D<Double> destinoPosicion;
 
 
-    public Individuo(TipoIndividuo tipoIndividuo, IndividuoConfiguracion individuoConfiguracion){
+    public Individuo(TipoIndividuo tipoIndividuo,Long generacion ,IndividuoConfiguracion individuoConfiguracion){
         this.uuid = UUID.randomUUID();
+        this.generacion = generacion;
         this.tipoIndividuo = tipoIndividuo;
+        this.direccion = new Point2D<>(0.0,0.0);
+        this.destinoPosicion = new Point2D<>(0.0,0.0);
+        this.vida = individuoConfiguracion.getVidaIndividuo();
         this.probabilidadClonacion = individuoConfiguracion.getClonacionProbabilidad();
         this.probabilidadReproduccion = individuoConfiguracion.getReproduccionProbabilidad();
-        this.vida = individuoConfiguracion.getVidaIndividuo();
-        this.probabilidadMuerte = BigDecimal.valueOf(1).subtract(this.probabilidadReproduccion);
+        this.probabilidadMuerte = BigDecimal.valueOf(BigDecimal.ONE.doubleValue() - this.probabilidadReproduccion.doubleValue());
     }
 
-    public abstract void move();
 
     @Override
     public String toString(){
-        return "Individuo:\n" +
-                "uuid=" + uuid +
-                "\ntipoIndividuo=" + tipoIndividuo +
-                "\nposicion=" + posicion +
-                "\ngeneracion=" + generacion +
-                "\nvida=" + vida +
-                "\nprobabilidadReproduccion=" + probabilidadReproduccion +
-                "\nprobabilidadClonacion=" + probabilidadClonacion +
-                "\nprobabilidadMuerte" + probabilidadMuerte + "\n";
+        return tipoIndividuo.getLabel() + ": " + uuid +
+                "\nGen: " + generacion + "," +
+                "Vida: " + vida + "," +
+                "Dir: " + direccion + "," +
+                "Destino: " + destinoPosicion +
+                "\nRepr:" + probabilidadReproduccion +
+                "Clon:" + probabilidadClonacion +
+                "Muerte:" + probabilidadMuerte + "\n";
     }
 }
