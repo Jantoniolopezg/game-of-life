@@ -18,7 +18,7 @@ public class SpringFXMLLoader {
 
     public FXMLLoad load(String fxmlPath) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
+            final FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setControllerFactory(ApplicationContextHolder.getContext()::getBean);
             fxmlLoader.setResources(resourceBundle);
             fxmlLoader.setLocation(getClass().getResource(fxmlPath));

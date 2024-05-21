@@ -19,7 +19,7 @@ public class RecursoConfiguracion {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private BigDecimal bibliotecaFactorMejoraReproduccion;
+    private BigDecimal bibliotecaFactorMejoraClonacion;
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
