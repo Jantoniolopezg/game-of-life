@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Configuracion {
+public class Configuracion implements Serializable {
 
     @JsonProperty("juego")
     @JsonInclude(JsonInclude.Include.NON_NULL)

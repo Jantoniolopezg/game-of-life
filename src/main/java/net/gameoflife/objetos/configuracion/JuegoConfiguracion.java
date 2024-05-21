@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import net.gameoflife.point.Point2D;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JuegoConfiguracion {
+public class JuegoConfiguracion implements Serializable {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)

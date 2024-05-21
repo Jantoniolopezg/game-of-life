@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import net.gameoflife.enumeraciones.TipoRecurso;
 import net.gameoflife.objetos.configuracion.RecursoConfiguracion;
-import net.gameoflife.point.Point2D;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @Setter
-public class Recurso {
+public class Recurso implements Serializable {
 
     private UUID uuid;
     private TipoRecurso tipoRecurso;

@@ -8,6 +8,7 @@ import net.gameoflife.enumeraciones.TipoIndividuo;
 import net.gameoflife.objetos.configuracion.IndividuoConfiguracion;
 import net.gameoflife.point.Point2D;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public abstract class Individuo {
+public abstract class Individuo implements Serializable {
 
     private UUID uuid;
     private TipoIndividuo tipoIndividuo;

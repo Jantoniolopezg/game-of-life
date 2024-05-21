@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecursoConfiguracion {
+public class RecursoConfiguracion implements Serializable {
 
     @JsonProperty
     @JsonInclude(JsonInclude.Include.NON_NULL)
