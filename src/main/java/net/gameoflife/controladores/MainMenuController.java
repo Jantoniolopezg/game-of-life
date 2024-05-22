@@ -1,5 +1,6 @@
 package net.gameoflife.controladores;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -11,7 +12,6 @@ import net.gameoflife.objetos.fxml.UserData;
 import net.gameoflife.servicios.ConfiguracionServicio;
 import org.springframework.stereotype.Controller;
 
-import java.awt.event.ActionEvent;
 import java.nio.file.Path;
 
 import static net.gameoflife.Constantes.Constantes.GAME_OF_LIFE_CFG;
@@ -28,11 +28,11 @@ public class MainMenuController extends BaseController {
     @FXML
     private AnchorPane rootPane;
 
-    public void onNewGameAction(ActionEvent actionEvent){
+    public void onNewGameAction(javafx.event.ActionEvent actionEvent) {
         newGame(TipoTablero.RANDOM);
     }
 
-    public void onNewEmptyGameAction(ActionEvent actionEvent){
+    public void onNewEmptyGameAction(ActionEvent actionEvent) {
         newGame(TipoTablero.VACIO);
     }
 

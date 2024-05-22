@@ -1,14 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="net.gameoflife.controladores.SimulationController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#onMouseMoved" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.gameoflife.controladores.SimulationController">
+    <children>
+        <Label text="Selecciona un recurso o individuo en el combo y añádelo con botón izquierdo o elimina todos los del tipo seleccionado con botón derecho" AnchorPane.bottomAnchor="0.0" />
+        <Canvas fx:id="gameCanvas" height="800.0" onMouseClicked="#onMouseClickedCanvas" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <VBox spacing="10.0" style="-fx-background-color: efefef;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="930.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ComboBox fx:id="addElementsCombo" maxWidth="1.7976931348623157E308" prefHeight="26.0" promptText="Añadir elementos al tablero" />
+                <HBox maxWidth="1.7976931348623157E308" spacing="10.0">
+                    <children>
+                        <Button fx:id="resetButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onResetButtonAction" text="Limpiar el tablero" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="removeResourcesButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRemoveResourcesButtonAction" text="Eliminar los recursos" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="removeIndividualsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onRemoveIndividualsButtonAction" text="Eliminar los individuos" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <Separator prefWidth="200.0" />
+                <HBox maxWidth="1.7976931348623157E308" spacing="10.0">
+                    <children>
+                        <ToggleButton fx:id="activateSimulationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Activar simulación" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="stepByStepButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onStepByStepButtonAction" text="Paso a paso" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Informacion de la celda" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <Label fx:id="coordinatesLabel" alignment="CENTER" layoutX="20.0" layoutY="97.0" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="cellInfoArea" maxHeight="1.7976931348623157E308" scrollLeft="200.0" scrollTop="200.0" VBox.vgrow="SOMETIMES">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </TextArea>
+                <HBox spacing="10.0">
+                    <children>
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Generación">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="generationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Separator layoutX="20.0" layoutY="90.0" prefWidth="200.0" />
+                <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" VBox.vgrow="NEVER">
+                    <children>
+                        <Button fx:id="saveGameButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSaveGameButtonAction" text="Guardar partida" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="loadGameButton" layoutX="69.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onLoadGameButtonAction" text="Cargar partida" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <HBox>
+                    <children>
+                        <Button fx:id="finishButton1" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onFinishButtonAction" text="Terminar" HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
 </AnchorPane>

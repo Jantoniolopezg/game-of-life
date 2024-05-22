@@ -23,7 +23,7 @@ public class GameOfLifeController extends BaseController{
     @FXML
     private Tab mainMenuTab;
 
-    private void onSelectionChangedSimulation(){
+    public void onSelectionChangedSimulation(){
         if (mainMenuTab.isSelected()){
             simulationTab.setDisable(true);
         }

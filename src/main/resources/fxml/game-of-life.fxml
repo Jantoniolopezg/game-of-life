@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="net.gameoflife.controladores.GameOfLifeController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.gameoflife.controladores.GameOfLifeController">
+    <TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="512.0" minWidth="512.0" prefHeight="732.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Tab fx:id="mainMenuTab" text="Menú principal">
+            <fx:include fx:id="mainMenu" source="main-menu.fxml" />
+        </Tab>
+        <Tab fx:id="configurationTab" text="Configuracion">
+            <fx:include fx:id="configuration" source="configuration.fxml" />
+        </Tab>
+        <Tab fx:id="simulationTab" disable="true" onSelectionChanged="#onSelectionChangedSimulation" text="Simulación">
+            <fx:include fx:id="game" source="simulation.fxml" />
+        </Tab>
+    </TabPane>
 </AnchorPane>
+

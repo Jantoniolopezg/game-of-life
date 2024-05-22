@@ -1,5 +1,6 @@
 package net.gameoflife.controladores;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
@@ -12,7 +13,6 @@ import net.gameoflife.servicios.ConfiguracionServicio;
 import net.gameoflife.utils.AlertUtil;
 import org.springframework.stereotype.Controller;
 
-import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 
@@ -84,14 +84,14 @@ public class ConfigurationController extends BaseController{
     }
 
     @FXML
-    void onLoadConfigurationButton(ActionEvent event){
+    void onLoadConfigurationButton(javafx.event.ActionEvent event) {
         init();
     }
 
     @FXML
-    void onSaveConfigurationButton(ActionEvent event){
+    void onSaveConfigurationButton(ActionEvent event) {
         configuracionServicio.save(CONFIGURATION_FILE_PATH);
-        AlertUtil.showInfo("La configuracion se ha guardado correctamente.");
+        AlertUtil.showInfo("La configuración se ha guardado correctamente.");
     }
 
     private void initGameConfigurationControls(){

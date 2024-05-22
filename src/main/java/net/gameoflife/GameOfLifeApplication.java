@@ -47,6 +47,7 @@ public class GameOfLifeApplication extends Application {
             stageManager.getPrimarySatge().setUserData(throwable);
             stageManager.switchScene(FXMLDefinition.ERROR);
         });
+
     }
 
 }
