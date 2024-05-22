@@ -144,7 +144,7 @@ public class SimulationController extends BaseController{
     @FXML
     @Override
     public void init() {
-        //initImages(); Esto daba error
+        initImages();
         initTimeLine();
         clearBoard(configuracionServicio.getConfiguracion().getJuegoConfiguracion().getSize());
         initCombo();
@@ -195,33 +195,6 @@ public class SimulationController extends BaseController{
     /**
      * Dibuja el tablero en el gameCanvas.
      */
-    //ESTE SIGUE DANDO ERROR PERO AL MENOS NO INMEDIATAMENTE
-    public void drawBoard() {
-        final Casilla[][] tablero = simulacionServicio.getTablero();
-        final Point2D<Integer> tableroSize = configuracionServicio.getConfiguracion().getJuegoConfiguracion().getSize();
-        clearBoard(tableroSize);
-        final GraphicsContext graphicsContext2D = gameCanvas.getGraphicsContext2D();
-        graphicsContext2D.setFill(Color.LIGHTBLUE);
-
-        for (int y = 0; y < tableroSize.getY(); y++) {
-            for (int x = 0; x < tableroSize.getX(); x++){
-                final Casilla casilla = tablero[x][y];
-                graphicsContext2D.fillRect((x * CELL_WIDTH) + 1, (y * CELL_HEIGHT) + 1, CELL_WIDTH - 1, CELL_HEIGHT - 1);
-
-                final List<Individuo> individuos = casilla.getIndividuos();
-                for (int individuoIndex = 0; individuoIndex < individuos.size(); individuoIndex++) {
-                    final Image image = new Image(Objects.requireNonNull(getClass().getResource(individuos.get(individuoIndex).getTipoIndividuo().getImageResourceName()).toExternalForm()));
-                    graphicsContext2D.drawImage(image, (x * CELL_WIDTH) + individuoIndex * IMAGE_WIDTH, (y * CELL_HEIGHT));
-                }
-                final List<Recurso> recursos = casilla.getRecursos();
-                for (int recursoIndex = 0; recursoIndex < recursos.size(); recursoIndex++) {
-                    final Image image = new Image(Objects.requireNonNull(getClass().getResource(recursos.get(recursoIndex).getTipoRecurso().getImageResourceName()).toExternalForm()));
-                    graphicsContext2D.drawImage(image, (x * CELL_WIDTH) + recursoIndex * IMAGE_WIDTH, (y * CELL_HEIGHT) + IMAGE_HEIGHT);
-                }
-            }
-        }
-    }
-    /* Asi como esta da error
     public void drawBoard() {
         final Casilla[][] tablero = simulacionServicio.getTablero();
         final Point2D<Integer> tableroSize = configuracionServicio.getConfiguracion().getJuegoConfiguracion().getSize();
@@ -246,19 +219,6 @@ public class SimulationController extends BaseController{
         }
     }
 
-     */
-
-    /*
-
-
-
-
-    AQUI ABAJO ESTA EL PROBLEMA, TIENE QUE VER CON EL COMO SE CARGAN LAS IMAGENES
-
-
-
-
-     */
     //Basicamete lo que antes haciamos cad vez que dibujabamos el mapa ahora lo hacemos una vez y lo guardamos
     private void initImages() {
         Arrays.stream(TipoIndividuo.values()).forEach(tipoIndividuo -> {
