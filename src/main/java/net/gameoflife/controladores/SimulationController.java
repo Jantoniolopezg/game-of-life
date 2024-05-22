@@ -20,23 +20,23 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.gameoflife.enumeraciones.FXMLDefinition;
 import net.gameoflife.enumeraciones.TipoIndividuo;
 import net.gameoflife.enumeraciones.TipoRecurso;
 import net.gameoflife.objetos.casilla.Casilla;
 import net.gameoflife.objetos.configuracion.JuegoConfiguracion;
 import net.gameoflife.objetos.individuos.Individuo;
+import net.gameoflife.objetos.juego.CondicionesFinalizado;
 import net.gameoflife.objetos.recursos.Recurso;
 import net.gameoflife.point.Point2D;
 import net.gameoflife.servicios.CasillaServicio;
 import net.gameoflife.servicios.ConfiguracionServicio;
 import net.gameoflife.servicios.PersistenciaJuegoServicio;
 import net.gameoflife.servicios.SimulacionServicio;
+import net.gameoflife.utils.AlertUtil;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static net.gameoflife.Constantes.Constantes.*;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -44,6 +44,9 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 @Controller
 @RequiredArgsConstructor
 public class SimulationController extends BaseController{
+
+    private final Map<TipoIndividuo, Image> individuoImagenes = new HashMap<>();
+    private final Map<TipoRecurso, Image> recursoImagenes = new HashMap<>();
 
     private final CasillaServicio casillaServicio;
 
@@ -141,10 +144,12 @@ public class SimulationController extends BaseController{
     @FXML
     @Override
     public void init() {
+        //initImages(); Esto daba error
         initTimeLine();
         clearBoard(configuracionServicio.getConfiguracion().getJuegoConfiguracion().getSize());
         initCombo();
         initActivateSimulationButton();
+        generation.set(0L);
         generationLabel.textProperty().bind(generation.asString());
     }
 
@@ -184,11 +189,13 @@ public class SimulationController extends BaseController{
     @FXML
     public void onFinishButtonAction(ActionEvent actionEvent){
         timeline.stop();
+        getStageManager().switchScene(FXMLDefinition.REPORT);
     }
 
     /**
      * Dibuja el tablero en el gameCanvas.
      */
+    //ESTE SIGUE DANDO ERROR PERO AL MENOS NO INMEDIATAMENTE
     public void drawBoard() {
         final Casilla[][] tablero = simulacionServicio.getTablero();
         final Point2D<Integer> tableroSize = configuracionServicio.getConfiguracion().getJuegoConfiguracion().getSize();
@@ -214,6 +221,56 @@ public class SimulationController extends BaseController{
             }
         }
     }
+    /* Asi como esta da error
+    public void drawBoard() {
+        final Casilla[][] tablero = simulacionServicio.getTablero();
+        final Point2D<Integer> tableroSize = configuracionServicio.getConfiguracion().getJuegoConfiguracion().getSize();
+        clearBoard(tableroSize);
+        final GraphicsContext graphicsContext2D = gameCanvas.getGraphicsContext2D();
+        graphicsContext2D.setFill(Color.LIGHTBLUE);
+
+        for (int y = 0; y < tableroSize.getY(); y++) {
+            for (int x = 0; x < tableroSize.getX(); x++){
+                final Casilla casilla = tablero[x][y];
+                graphicsContext2D.fillRect((x * CELL_WIDTH) + 1, (y * CELL_HEIGHT) + 1, CELL_WIDTH - 1, CELL_HEIGHT - 1);
+
+                final List<Individuo> individuos = casilla.getIndividuos();
+                for (int individuoIndex = 0; individuoIndex < individuos.size(); individuoIndex++) {
+                    graphicsContext2D.drawImage(individuoImagenes.get(individuos.get(individuoIndex).getTipoIndividuo()), (x * CELL_WIDTH) + individuoIndex * IMAGE_WIDTH, (y * CELL_HEIGHT));
+                }
+                final List<Recurso> recursos = casilla.getRecursos();
+                for (int recursoIndex = 0; recursoIndex < recursos.size(); recursoIndex++) {
+                    graphicsContext2D.drawImage(recursoImagenes.get(recursos.get(recursoIndex).getTipoRecurso()), (x * CELL_WIDTH) + recursoIndex * IMAGE_WIDTH, (y * CELL_HEIGHT) + IMAGE_HEIGHT);
+                }
+            }
+        }
+    }
+
+     */
+
+    /*
+
+
+
+
+    AQUI ABAJO ESTA EL PROBLEMA, TIENE QUE VER CON EL COMO SE CARGAN LAS IMAGENES
+
+
+
+
+     */
+    //Basicamete lo que antes haciamos cad vez que dibujabamos el mapa ahora lo hacemos una vez y lo guardamos
+    private void initImages() {
+        Arrays.stream(TipoIndividuo.values()).forEach(tipoIndividuo -> {
+            final Image image = new Image(Objects.requireNonNull(getClass().getResource(tipoIndividuo.getImageResourceName()).toExternalForm()));
+            individuoImagenes.put(tipoIndividuo, image);
+        });
+        Arrays.stream(TipoRecurso.values()).forEach(tipoRecurso -> {
+            final Image image = new Image(Objects.requireNonNull(getClass().getResource(tipoRecurso.getImageResourceName()).toExternalForm()));
+            recursoImagenes.put(tipoRecurso, image);
+        });
+    }
+
 
     private void initTimeLine() {
         final KeyFrame keyFrame = new KeyFrame(Duration.millis(SIMULATION_SPEED), actionEvent -> {
@@ -263,6 +320,21 @@ public class SimulationController extends BaseController{
     private void runGameLoop() {
         simulacionServicio.runGameLoop(generation.get());
         Platform.runLater(this::drawBoard);
-        generation.set(generation.get() + 1);
+        final CondicionesFinalizado condicionesFinalizado = simulacionServicio.getCondicionesFinalizado(generation.get());
+        if (condicionesFinalizado.isTerminado()) {
+            timeline.stop();
+            runningProperty.set(false);
+            Platform.runLater(() -> finishGame(condicionesFinalizado));
+        } else {
+            generation.set(generation.get() + 1);
+        }
+    }
+
+    private void finishGame(CondicionesFinalizado condicionesFinalizado) {
+        final String alertMessage = condicionesFinalizado.isTodosMuertos()
+                ? "No ha habido supervivientes"
+                : "El individuo " + condicionesFinalizado.getIndividuo().getUuid() + "es el ganador.";
+        AlertUtil.showInfo("Game over\n" + alertMessage);
+        getStageManager().switchScene(FXMLDefinition.REPORT);
     }
 }

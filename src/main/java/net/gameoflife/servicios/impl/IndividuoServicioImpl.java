@@ -3,6 +3,7 @@ package net.gameoflife.servicios.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.gameoflife.enumeraciones.RazonMuerte;
 import net.gameoflife.enumeraciones.TipoIndividuo;
 import net.gameoflife.objetos.casilla.Casilla;
 import net.gameoflife.objetos.configuracion.IndividuoConfiguracion;
@@ -13,6 +14,8 @@ import net.gameoflife.objetos.individuos.Individuo;
 import net.gameoflife.objetos.individuos.NormalIndividuo;
 import net.gameoflife.point.Point2D;
 import net.gameoflife.servicios.ConfiguracionServicio;
+import net.gameoflife.servicios.EventoMapper;
+import net.gameoflife.servicios.EventoServicio;
 import net.gameoflife.servicios.IndividuoServicio;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -33,6 +36,8 @@ import static net.gameoflife.utils.MathsUtil.isInRange;
 @RequiredArgsConstructor
 public class IndividuoServicioImpl implements IndividuoServicio {
 
+    private final EventoMapper eventoMapper;
+    private final EventoServicio eventoServicio;
     private final ConfiguracionServicio configuracionServicio;
     @Override
     public Individuo getRandomIndividuo(Long generacion, IndividuoConfiguracion individuoConfiguracion) {
@@ -97,6 +102,9 @@ public class IndividuoServicioImpl implements IndividuoServicio {
                 final List<Individuo> individuosActualizados = new ArrayList<>(casilla.getIndividuos());
                 individuosActualizados.add(nuevoIndividuo);
                 casilla.setIndividuos(individuosActualizados);
+                eventoServicio.addEvento(eventoMapper.mapIndividuoReproduceEvento(generacion, izquierda, derecha, nuevoIndividuo, casilla));
+                eventoServicio.addEvento(eventoMapper.mapIndividuoReproduceEvento(generacion, derecha, izquierda, nuevoIndividuo, casilla));
+                eventoServicio.addEvento(eventoMapper.mapIndividuoApareceEvento(generacion, nuevoIndividuo, casilla));
             }else {
                 // Mueren los 2 porque no se pueden reproducir, este requisito parece un poco duro, pienso
                 // que habría que eliminarlo porque limita muchísimo las posibilidades de una colonia de mayor
@@ -104,7 +112,7 @@ public class IndividuoServicioImpl implements IndividuoServicio {
                 // ir por parejas hacia el mismo recurso, aumentando sus posibilidades de morir por no poder reproducirse.
                 final List<Individuo> individuosActualizados = new ArrayList<>(casilla.getIndividuos());
                 individuosActualizados.removeIf((individuo -> {
-                    log.info("Individuo eliminado por no poder reproducirse: " + individuo);
+                    eventoServicio.addEvento(eventoMapper.mapIndividuoMuereEvento(generacion, individuo, casilla, RazonMuerte.NO_REPRODUCE));
                     return individuo.getUuid().equals(izquierda.getUuid()) || individuo.getUuid().equals(derecha.getUuid());
                 }));
                 casilla.setIndividuos(individuosActualizados);

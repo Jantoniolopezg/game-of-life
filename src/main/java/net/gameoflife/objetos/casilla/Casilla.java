@@ -6,6 +6,7 @@ import lombok.Setter;
 import net.gameoflife.eventos.Evento;
 import net.gameoflife.objetos.individuos.Individuo;
 import net.gameoflife.objetos.recursos.Recurso;
+import net.gameoflife.point.Point2D;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @Setter
 @Builder
 public class Casilla implements Serializable {
-    //private Point2D<Integer> boardPosition;
+    private Point2D<Integer> boardPosition;
     private List<Evento> eventos;
     private List<Individuo> individuos;
     private List<Recurso> recursos;

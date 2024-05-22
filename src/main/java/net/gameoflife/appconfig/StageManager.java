@@ -31,6 +31,7 @@ public class StageManager {
         if (fxmlDefinition.isModal()){
             showModalScene(rootNode,fxmlDefinition);
         }else {
+            show(rootNode, fxmlDefinition);
         }
     }
 

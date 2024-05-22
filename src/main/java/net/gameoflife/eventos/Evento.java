@@ -1,15 +1,18 @@
 package net.gameoflife.eventos;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import net.gameoflife.enumeraciones.TipoEvento;
 
 import java.io.Serializable;
 
 @Getter
-@Setter
-@Builder
+@SuperBuilder
+@RequiredArgsConstructor
+@ToString
 public class Evento implements Serializable {
+    @NonNull
+    private final Long generation;
+    @NonNull
     private TipoEvento tipoEvento;
 }

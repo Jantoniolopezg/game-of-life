@@ -2,6 +2,7 @@ package net.gameoflife.servicios;
 
 import net.gameoflife.objetos.casilla.Casilla;
 import net.gameoflife.objetos.fxml.UserData;
+import net.gameoflife.objetos.juego.CondicionesFinalizado;
 
 public interface SimulacionServicio {
 
@@ -18,4 +19,6 @@ public interface SimulacionServicio {
     void removeElemento(Long value, Casilla casilla, String itemSeleccionado);
 
     void runGameLoop(long generation);
+
+    CondicionesFinalizado getCondicionesFinalizado(long generation);
 }

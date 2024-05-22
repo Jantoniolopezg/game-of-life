@@ -68,7 +68,18 @@ public enum FXMLDefinition {
             return "/fxml/error.fxml";
         }
 
-    };
+    },
+    REPORT(false, false, false) {
+        @Override
+        public String getTitle() {
+            return "Game of life - " + ResourceBundleUtil.getLabel("screen.report");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/report.fxml";
+        }
+    } ;
 
     public abstract String getTitle();
 
