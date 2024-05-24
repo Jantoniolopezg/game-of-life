@@ -298,7 +298,7 @@ public class SimulationController extends BaseController{
     private void finishGame(CondicionesFinalizado condicionesFinalizado) {
         final String alertMessage = condicionesFinalizado.isTodosMuertos()
                 ? "No ha habido supervivientes"
-                : "El individuo " + condicionesFinalizado.getIndividuo().getUuid() + "es el ganador.";
+                : "El individuo: \n" + condicionesFinalizado.getIndividuo().getUuid() + "\nes el ganador.";
         AlertUtil.showInfo("Game over\n" + alertMessage);
         getStageManager().switchScene(FXMLDefinition.REPORT);
     }
