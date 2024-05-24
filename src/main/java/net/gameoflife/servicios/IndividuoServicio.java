@@ -18,7 +18,7 @@ public interface IndividuoServicio {
 
     void senicidio(Casilla casilla);
 
-    void actualizarVidaIndividuos(Casilla casilla);
+    void actualizarVidaIndividuos(long generacion, Casilla casilla);
 
     void eliminarIndividuo(Casilla casilla, Individuo individuo);
 }

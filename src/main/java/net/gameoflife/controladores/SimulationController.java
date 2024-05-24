@@ -27,12 +27,10 @@ import net.gameoflife.objetos.casilla.Casilla;
 import net.gameoflife.objetos.configuracion.JuegoConfiguracion;
 import net.gameoflife.objetos.individuos.Individuo;
 import net.gameoflife.objetos.juego.CondicionesFinalizado;
+import net.gameoflife.objetos.juego.DatosJuego;
 import net.gameoflife.objetos.recursos.Recurso;
 import net.gameoflife.point.Point2D;
-import net.gameoflife.servicios.CasillaServicio;
-import net.gameoflife.servicios.ConfiguracionServicio;
-import net.gameoflife.servicios.PersistenciaJuegoServicio;
-import net.gameoflife.servicios.SimulacionServicio;
+import net.gameoflife.servicios.*;
 import net.gameoflife.utils.AlertUtil;
 import org.springframework.stereotype.Controller;
 
@@ -49,6 +47,8 @@ public class SimulationController extends BaseController{
     private final Map<TipoRecurso, Image> recursoImagenes = new HashMap<>();
 
     private final CasillaServicio casillaServicio;
+
+    private final EventoServicio eventoServicio;
 
     private final SimulacionServicio simulacionServicio;
 
@@ -89,7 +89,11 @@ public class SimulationController extends BaseController{
 
     @FXML
     void onSaveGameButtonAction(ActionEvent actionEvent){
-        persistenciaJuegoServicio.save(simulacionServicio.getTablero());
+        final DatosJuego datosJuego = DatosJuego.builder()
+                .tablero(simulacionServicio.getTablero())
+                .eventos(eventoServicio.getEventos())
+                .build();
+        persistenciaJuegoServicio.save(datosJuego);
     }
 
     @FXML
@@ -118,9 +122,10 @@ public class SimulationController extends BaseController{
 
     @FXML
     void onLoadGameButtonAction(ActionEvent actionEvent){
-        final Casilla[][] tableroCargado = persistenciaJuegoServicio.load();
-        if (tableroCargado != null){
-            simulacionServicio.setTablero(tableroCargado);
+        final DatosJuego datosJuego = persistenciaJuegoServicio.load();
+        if (datosJuego != null) {
+            simulacionServicio.setTablero(datosJuego.getTablero());
+            eventoServicio.setEventos(datosJuego.getEventos());
             drawBoard();
         }
     }

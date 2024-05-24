@@ -2,11 +2,12 @@ package net.gameoflife.servicios.impl;
 
 import net.gameoflife.enumeraciones.RazonMuerte;
 import net.gameoflife.enumeraciones.TipoEvento;
-import net.gameoflife.eventos.IndividuoApareceEvento;
-import net.gameoflife.eventos.IndividuoMuereEvento;
-import net.gameoflife.eventos.IndividuoReproduceEvento;
+import net.gameoflife.eventos.*;
 import net.gameoflife.objetos.casilla.Casilla;
 import net.gameoflife.objetos.individuos.Individuo;
+import net.gameoflife.objetos.individuos.ParametrosMovimiento;
+import net.gameoflife.objetos.recursos.Recurso;
+import net.gameoflife.point.Point2D;
 import net.gameoflife.servicios.EventoMapper;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class EventoMapperImpl implements EventoMapper {
     public IndividuoReproduceEvento mapIndividuoReproduceEvento(long generation, Individuo individuo, Individuo pareja, Individuo hijo, Casilla casilla) {
         return IndividuoReproduceEvento.builder()
                 .generation(generation)
-                .tipoEvento(TipoEvento.INDIVIDUO_REPRODECE)
+                .tipoEvento(TipoEvento.INDIVIDUO_REPRODUCE)
                 .uuid(individuo.getUuid())
                 .tipoIndividuo(individuo.getTipoIndividuo())
                 .parejaTipo(pareja.getTipoIndividuo())
@@ -50,4 +51,29 @@ public class EventoMapperImpl implements EventoMapper {
                 .build();
     }
 
+    @Override
+    public RecursoDesapareceEvento mapRecursoDesapareceEvento(long generation, Recurso recurso, Casilla casilla) {
+        return RecursoDesapareceEvento.builder()
+                .generation(generation)
+                .tipoEvento(TipoEvento.RECURSO_DESAPARECE)
+                .tipoRecurso(recurso.getTipoRecurso())
+                .uuid(recurso.getUuid())
+                .posicion(casilla.getBoardPosition())
+                .build();
+    }
+
+    @Override
+    public IndividuoMueveEvento mapIndividuoMueveEvento(ParametrosMovimiento parametrosMovimiento, Individuo individuo, Point2D<Integer> nextPosition) {
+        final Point2D<Double> individuoPosition = parametrosMovimiento.getPosicionIndividuo();
+        final Point2D<Integer> position = new Point2D<>(individuoPosition.getX().intValue(), individuoPosition.getY().intValue());
+        return IndividuoMueveEvento.builder()
+                .uuid(individuo.getUuid())
+                .generation(parametrosMovimiento.getGeneration())
+                .tipoEvento(TipoEvento.INDIVIDUO_MUEVE)
+                .tipoIndividuo(individuo.getTipoIndividuo())
+                .posicion(position)
+                .newPosicion(nextPosition)
+                .direccion(individuo.getDireccion())
+                .build();
+    }
 }

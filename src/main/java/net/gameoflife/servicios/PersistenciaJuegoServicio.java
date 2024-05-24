@@ -1,9 +1,9 @@
 package net.gameoflife.servicios;
 
-import net.gameoflife.objetos.casilla.Casilla;
+import net.gameoflife.objetos.juego.DatosJuego;
 
 public interface PersistenciaJuegoServicio {
-    Casilla[][] load();
+    DatosJuego load();
 
-    void save(Casilla[][] tablero);
+    void save(DatosJuego datosJuego);
 }

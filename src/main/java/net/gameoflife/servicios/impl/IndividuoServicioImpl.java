@@ -141,7 +141,6 @@ public class IndividuoServicioImpl implements IndividuoServicio {
         if (individuos.size() > juegoConfiguracion.getMaxIndividuosPorCasilla()) {
             individuos.sort(Comparator.comparing(Individuo::getVida));
             final int individuosAEliminar = individuos.size() - juegoConfiguracion.getMaxIndividuosPorCasilla();
-            log.info("Individuos eliminados por viejos: " + individuosAEliminar);
             individuos.subList(0, individuosAEliminar).clear();
             casilla.setIndividuos(individuos);
         }
@@ -149,13 +148,13 @@ public class IndividuoServicioImpl implements IndividuoServicio {
 
 
     @Override
-    public void actualizarVidaIndividuos(Casilla casilla) {
+    public void actualizarVidaIndividuos(long generacion, Casilla casilla) {
         casilla.getIndividuos().forEach(individuo -> {
             // Reducir la vida del individuo en cada turno
             final boolean isVivo = actualizarVida(-1,individuo);
             if (!isVivo) {
                 eliminarIndividuo(casilla,individuo);
-                log.info("Individuo eliminado por quedarse sin vida: " + individuo);
+                eventoServicio.addEvento(eventoMapper.mapIndividuoMuereEvento(generacion, individuo, casilla, RazonMuerte.NO_VIDA));
             }else {
                 final BigDecimal reproduccionProbabilidad = individuo.getProbabilidadReproduccion();
                 final BigDecimal nuevaReproduccionProbabilidad = reproduccionProbabilidad.subtract(reproduccionProbabilidad.multiply(BigDecimal.valueOf(0.1)));
@@ -172,7 +171,7 @@ public class IndividuoServicioImpl implements IndividuoServicio {
                 final double muerteSubitaProbabilidad = new Random().doubles(0.0, 1.0).findFirst().getAsDouble();
                 if (isInRange(0.0, individuo.getProbabilidadMuerte().doubleValue(), muerteSubitaProbabilidad)){
                     eliminarIndividuo(casilla,individuo);
-                    log.info("Individuo elimindo por muerte \"natural\": " + individuo);
+                    eventoServicio.addEvento(eventoMapper.mapIndividuoMuereEvento(generacion, individuo, casilla, RazonMuerte.PROBABILIDAD_MUERTE));
                 }
             }
         });

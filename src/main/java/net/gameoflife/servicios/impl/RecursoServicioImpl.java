@@ -8,9 +8,7 @@ import net.gameoflife.objetos.configuracion.Configuracion;
 import net.gameoflife.objetos.configuracion.JuegoConfiguracion;
 import net.gameoflife.objetos.configuracion.RecursoConfiguracion;
 import net.gameoflife.objetos.recursos.*;
-import net.gameoflife.servicios.ConfiguracionServicio;
-import net.gameoflife.servicios.IndividuoServicio;
-import net.gameoflife.servicios.RecursoServicio;
+import net.gameoflife.servicios.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +27,9 @@ import static net.gameoflife.utils.MathsUtil.isInRange;
 public class RecursoServicioImpl implements RecursoServicio {
     private static final double TOTAL_UPPER_LIMIT = 6.0;
 
+    private final EventoMapper eventoMapper;
+    private final EventoServicio eventoServicio;
     private final IndividuoServicio individuoServicio;
-
     private final ConfiguracionServicio configuracionServicio;
 
     @Override
@@ -157,11 +156,12 @@ public class RecursoServicioImpl implements RecursoServicio {
     }
 
     @Override
-    public void actualizarVidaRecursos(Casilla casilla) {
+    public void actualizarVidaRecursos(long generacion, Casilla casilla) {
         casilla.getRecursos().forEach(recurso -> {
             boolean isActivo = actualizaVidaRecurso(-1,recurso);
             if (!isActivo){
                 eliminarRecurso(casilla, recurso);
+                eventoServicio.addEvento(eventoMapper.mapRecursoDesapareceEvento(generacion, recurso, casilla));
             }
         });
     }

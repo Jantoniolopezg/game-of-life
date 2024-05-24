@@ -9,6 +9,8 @@ import net.gameoflife.objetos.individuos.ParametrosMovimiento;
 import net.gameoflife.objetos.recursos.ExtendedRecurso;
 import net.gameoflife.objetos.recursos.Recurso;
 import net.gameoflife.point.Point2D;
+import net.gameoflife.servicios.EventoMapper;
+import net.gameoflife.servicios.EventoServicio;
 import net.gameoflife.servicios.MovimientoServicio;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,10 @@ import static net.gameoflife.utils.MathsUtil.*;
 @Service
 @RequiredArgsConstructor
 public class MovimientoServicioImpl implements MovimientoServicio {
+
+    private final EventoMapper eventoMapper;
+    private final EventoServicio eventoServicio;
+
     @Override
     public void move(ParametrosMovimiento parametrosMovimiento) {
         parametrosMovimiento.getCasilla().getIndividuos().forEach(individuo -> {
@@ -49,7 +55,8 @@ public class MovimientoServicioImpl implements MovimientoServicio {
         eliminarIndividuoDeCasillaActual(parametrosMovimiento, individuo);
 
         // Añadir al individuo en la lista de individuos de la celda con la nueva posición.
-        addIndividuoACasillaEnNuevaPosicion(parametrosMovimiento, individuo);
+        final Casilla casillaNuevaPosicion = addIndividuoACasillaEnNuevaPosicion(parametrosMovimiento, individuo);
+        eventoServicio.addEvento(eventoMapper.mapIndividuoMueveEvento(parametrosMovimiento, individuo, casillaNuevaPosicion.getBoardPosition()));
     }
 
     /**
@@ -69,7 +76,8 @@ public class MovimientoServicioImpl implements MovimientoServicio {
         eliminarIndividuoDeCasillaActual(parametrosMovimiento, individuo);
 
         // Añadir al individuo en la lista de individuos de la celda con la nueva posición.
-        addIndividuoACasillaEnNuevaPosicion(parametrosMovimiento, individuo);
+        final Casilla casillaNuevaPosicion = addIndividuoACasillaEnNuevaPosicion(parametrosMovimiento, individuo);
+        eventoServicio.addEvento(eventoMapper.mapIndividuoMueveEvento(parametrosMovimiento, individuo, casillaNuevaPosicion.getBoardPosition()));
     }
 
     /**
@@ -218,7 +226,7 @@ public class MovimientoServicioImpl implements MovimientoServicio {
     /**
      * Añadir al individuo en la lista de individuos de la celda con la nueva posición.
      */
-    private void addIndividuoACasillaEnNuevaPosicion(ParametrosMovimiento parametrosMovimiento, Individuo individuo) {
+    private Casilla addIndividuoACasillaEnNuevaPosicion(ParametrosMovimiento parametrosMovimiento, Individuo individuo) {
         final Point2D<Double> posicionActual = parametrosMovimiento.getPosicionIndividuo();
         final Casilla[][] tablero = parametrosMovimiento.getTablero();
         final Double nuevoX = clamp(posicionActual.getX() + individuo.getDireccion().getX(), 0.0, parametrosMovimiento.getTableroSize().getX() - 1.0);
@@ -227,6 +235,7 @@ public class MovimientoServicioImpl implements MovimientoServicio {
         final List<Individuo> caillaDestinoIndividuos = new ArrayList<>(casillaDestino.getIndividuos());
         caillaDestinoIndividuos.add(individuo);
         casillaDestino.setIndividuos(caillaDestinoIndividuos);
+        return casillaDestino;
     }
 
 }

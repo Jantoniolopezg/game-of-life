@@ -3,7 +3,8 @@ package net.gameoflife.servicios.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.gameoflife.excepcion.GameOfLifeException;
-import net.gameoflife.objetos.casilla.Casilla;
+import net.gameoflife.objetos.juego.DatosJuego;
+import net.gameoflife.servicios.EventoServicio;
 import net.gameoflife.servicios.PersistenciaJuegoServicio;
 import net.gameoflife.utils.AlertUtil;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,16 @@ import static net.gameoflife.Constantes.Constantes.GAME_DATA_BIN;
 @Service
 @RequiredArgsConstructor
 public class PersistenciaJuegoServicioImpl implements PersistenciaJuegoServicio {
+
+    private final EventoServicio eventoServicio;
     @Override
-    public Casilla[][] load() {
-        Casilla[][] casillas = null;
+    public DatosJuego load() {
+        DatosJuego datosJuego = null;
         final File file = new File(GAME_DATA_BIN);
 
         if (file.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(GAME_DATA_BIN))) {
-                casillas = (Casilla[][]) ois.readObject();
+                datosJuego = (DatosJuego) ois.readObject();
             }catch (Exception exception){
                 final String mensajeError = "No se ha podido cargar la partida." + exception;
                 log.error(mensajeError);
@@ -32,13 +35,13 @@ public class PersistenciaJuegoServicioImpl implements PersistenciaJuegoServicio 
         }else{
             AlertUtil.showInfo("El fichero con los datos de la partida no existe.");
         }
-        return casillas;
+        return datosJuego;
     }
 
     @Override
-    public void save(Casilla[][] tablero) {
+    public void save(DatosJuego datosJuego) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(GAME_DATA_BIN))) {
-            oos.writeObject(tablero);
+            oos.writeObject(datosJuego);
         } catch (Exception exception){
             final String mensajeError = "No se ha podido guardar la partida." + exception;
             log.error(mensajeError);

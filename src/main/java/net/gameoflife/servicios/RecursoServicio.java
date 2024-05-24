@@ -12,9 +12,11 @@ public interface RecursoServicio {
 
     TipoRecurso getTipoRecursoDeComboLabel(String label);
 
+    void actualizarVidaRecursos(long generacion, Casilla casilla);
+
     void aplicarRecursos(Casilla casilla);
 
     void crear(long generacion, Casilla casilla);
 
-    void actualizarVidaRecursos(Casilla casilla);
+
 }

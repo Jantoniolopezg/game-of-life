@@ -25,4 +25,5 @@ module net.gameoflife {
     exports net.gameoflife.appconfig;
     opens net.gameoflife.appconfig to com.fasterxml.jackson.databind, javafx.fxml, spring.core;
     opens net.gameoflife.controladores to com.fasterxml.jackson.databind, javafx.fxml, spring.core;
+    opens net.gameoflife.eventos to spring.beans;
 }

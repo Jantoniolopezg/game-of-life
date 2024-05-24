@@ -1,7 +1,6 @@
 package net.gameoflife.enumeraciones;
 
 public enum TipoEvento {
-    MOVIO,
     REPRODUJO,
     CLONO,
     AGUA_APARECIO,
@@ -23,6 +22,8 @@ public enum TipoEvento {
     BIBLIOTECA_APLICADO,
     POZO_APLICADO,
     INDIVIDUO_APARECE,
-    INDIVIDUO_REPRODECE,
+    INDIVIDUO_REPRODUCE,
+    INDIVIDUO_MUEVE,
     INDIVIDUO_MUERE,
+    RECURSO_DESAPARECE
 }

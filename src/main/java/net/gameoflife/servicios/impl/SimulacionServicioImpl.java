@@ -33,6 +33,7 @@ import static net.gameoflife.Constantes.Constantes.RESOURCE;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class SimulacionServicioImpl implements SimulacionServicio {
     private final CasillaServicio casillaServicio;
+    private final EventoServicio eventoServicio;
     private final RecursoServicio recursoServicio;
     private final MovimientoServicio movimientoServicio;
     private final IndividuoServicio individuoServicio;
@@ -45,6 +46,7 @@ public class SimulacionServicioImpl implements SimulacionServicio {
     @Override
     public void initGame(UserData userData) {
         this.userData = userData;
+        eventoServicio.clear();
         initTablero();
     }
 
@@ -88,7 +90,7 @@ public class SimulacionServicioImpl implements SimulacionServicio {
         for (double y = 0; y < tableroSize.getY(); y++) {
             for (double x = 0; x < tableroSize.getX(); x++) {
                 final Casilla casilla = tablero[(int) x][(int) y];
-                individuoServicio.actualizarVidaIndividuos(casilla);
+                individuoServicio.actualizarVidaIndividuos(generation, casilla);
             }
         }
 
@@ -96,7 +98,7 @@ public class SimulacionServicioImpl implements SimulacionServicio {
         for (double y = 0; y < tableroSize.getY(); y++) {
             for (double x = 0; x < tableroSize.getX(); x++) {
                 final Casilla casilla = tablero[(int) x][(int) y];
-                recursoServicio.actualizarVidaRecursos(casilla);
+                recursoServicio.actualizarVidaRecursos(generation, casilla);
             }
         }
 
