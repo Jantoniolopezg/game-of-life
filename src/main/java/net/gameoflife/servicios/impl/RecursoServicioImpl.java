@@ -136,6 +136,7 @@ public class RecursoServicioImpl implements RecursoServicio {
     private void aplicarPozo(Casilla casilla){
         casilla.getIndividuos().forEach(individuo -> {
             log.info("Individuo eliminado por pozo: " + individuo);
+            individuo.setVida(0);
             individuoServicio.eliminarIndividuo(casilla, individuo);
         });
     }

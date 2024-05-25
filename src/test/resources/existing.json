@@ -1,0 +1,27 @@
+{
+  "game" : {
+    "size" : {
+      "x" : 11,
+      "y" : 9
+    },
+    "populationImprovementFactor" : 0.5,
+    "maxResourcesPerCell" : 5,
+    "maxIndividualsPerCell" : 5
+  },
+  "individual" : {
+    "individualLife" : 3,
+    "reproductionProbability" : 0.5,
+    "cloningProbability" : 0.5
+  },
+  "resource" : {
+    "treasureReproductionImprovementFactor" : 0.5,
+    "libraryCloningImprovementFactor" : 0.5,
+    "resourcesLife" : 3,
+    "waterResourceProbability" : 0.5,
+    "foodResourceProbability" : 0.5,
+    "mountainResourceProbability" : 0.5,
+    "treasureResourceProbability" : 0.5,
+    "libraryResourceProbability" : 0.5,
+    "dwellResourceProbability" : 0.25
+  }
+}
